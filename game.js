@@ -2,13 +2,12 @@ var buttonColours = ["red", "blue", "green", "yellow"];
 var gamePattern = [];
 var userClickedPattern = [];
 var level = 0;
+var numberOfPresses = 0;
 
 function nextSequence(){
     var randomNumber = Math.floor(Math.random() * 3);
     var randomChosenColour = buttonColours[randomNumber];
     gamePattern.push(randomChosenColour);
-
-    console.log(randomChosenColour);
 
     //flash animation
     $("." + randomChosenColour).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
@@ -17,6 +16,35 @@ function nextSequence(){
     level++
     $("#level-title").text("Level " + level);
 
+    userClickedPattern= [];
+}
+
+function checkAnswer(currentLevel){
+    if (gamePattern[currentLevel] === userClickedPattern[currentLevel]){
+        console.log("success");
+        if (userClickedPattern.length === gamePattern.length){
+            setTimeout(function () {
+              nextSequence();
+            }, 1000);
+          }
+    } else {
+        console.log("Wrong");
+        playColorAudio("wrong");
+        $("body").addClass("game-over");
+        setTimeout(function (){
+            $("body").removeClass("game-over");
+        }, 200);
+        $("#level-title").text("Press Any Key to Restart");
+        startOver();
+    }
+
+}
+
+function startOver(){
+    gamePattern = [];
+    userClickedPattern = [];
+    level = 0;
+    numberOfPresses = 0;
 }
 
 $(".btn").on("click", function () { 
@@ -24,6 +52,7 @@ $(".btn").on("click", function () {
     userClickedPattern.push(userChosenColour);
     playColorAudio(userChosenColour);
     animatePress(userChosenColour);
+    checkAnswer(userClickedPattern.length-1);
 });
 
 // Audio
@@ -45,9 +74,9 @@ function playColorAudio(key){
             var yellowAudio = new Audio("./sounds/yellow.mp3");
             yellowAudio.play();
             break;
-        // case wrong:
-        //     var wrongAudio = new Audio("./sounds/wrong.mp3");
-        //     wrongAudio.play();
+        case 'wrong':
+            var wrongAudio = new Audio("./sounds/wrong.mp3");
+            wrongAudio.play();
         default:
             break;
     }
@@ -62,7 +91,6 @@ function animatePress(currentColour){
 }
 
 //Keypress Start Sequence
-var numberOfPresses = 0;
 $(document).on("keydown", function () {
     numberOfPresses++;
     if (numberOfPresses === 1){
