@@ -11,16 +11,17 @@ function nextSequence(){
 
     //flash animation
     $("." + randomChosenColour).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-    colorAudio(randomChosenColour); //play color
+    playColorAudio(randomChosenColour); //play color
 }
 
 $(".btn").on("click", function () { 
     var userChosenColour = $(this).attr("id");
     userClickedPattern.push(userChosenColour);
+    playColorAudio(userChosenColour);
 });
 
 // Audio
-function colorAudio(key){
+function playColorAudio(key){
     switch (key) {
         case 'red':
             var redAudio = new Audio("./sounds/red.mp3");
@@ -35,7 +36,7 @@ function colorAudio(key){
             greenAudio.play();
             break;
         case 'yellow':
-            var redAudio = new Audio("./sounds/yellow.mp3");
+            var yellowAudio = new Audio("./sounds/yellow.mp3");
             yellowAudio.play();
             break;
         // case wrong:
