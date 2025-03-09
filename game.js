@@ -18,6 +18,7 @@ $(".btn").on("click", function () {
     var userChosenColour = $(this).attr("id");
     userClickedPattern.push(userChosenColour);
     playColorAudio(userChosenColour);
+    animatePress(userChosenColour);
 });
 
 // Audio
@@ -45,4 +46,12 @@ function playColorAudio(key){
         default:
             break;
     }
+}
+
+//Button Press Animation
+function animatePress(currentColour){
+    $("." + currentColour).addClass("pressed");
+    setTimeout(function (){
+        $("." + currentColour).removeClass("pressed");
+    }, 100);
 }
