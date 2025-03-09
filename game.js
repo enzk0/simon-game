@@ -1,5 +1,6 @@
 var buttonColours = ["red", "blue", "green", "yellow"];
 var gamePattern = [];
+var userClickedPattern = [];
 
 function nextSequence(){
     var randomNumber = Math.floor(Math.random() * 3);
@@ -8,10 +9,17 @@ function nextSequence(){
 
     console.log(randomChosenColour);
 
+    //flash animation
     $("." + randomChosenColour).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-    colorAudio(randomChosenColour);
+    colorAudio(randomChosenColour); //play color
 }
 
+$(".btn").on("click", function () { 
+    var userChosenColour = $(this).attr("id");
+    userClickedPattern.push(userChosenColour);
+});
+
+// Audio
 function colorAudio(key){
     switch (key) {
         case 'red':
@@ -37,5 +45,3 @@ function colorAudio(key){
             break;
     }
 }
-
-nextSequence();
